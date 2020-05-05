@@ -131,7 +131,7 @@
 			<span>Copyright 2013 bootstrappage template All right reserved.</span>
 		</section>
 	</div>
-
+{% csrf_token %}
 	<script src="/media/shop/themes/js/common.js"></script>
 	<script src="/media/shop/themes/js/jquery.flexslider-min.js"></script>
 	<script type="text/javascript">
@@ -151,22 +151,7 @@ $(function () {
 		});
 
 
-// Used in fetch post request csrf token
-function getCookie(name)
-{
-    var cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        var cookies = document.cookie.split(';');
-        for (var i = 0; i < cookies.length; i++) {
-            var cookie = cookies[i].trim();
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
+
 
 
 // Return the quantity of given prouct id with that size and color
@@ -174,7 +159,7 @@ function getCookie(name)
 async function checkdb(id, size, color)
 {
  id = id.slice(2);
- let csrftoken = getCookie('csrftoken');
+ var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
  let type = size + color;
  let url = '/shop/checkdb/';
  let data = JSON.stringify({"id": parseInt(id), "type": type });

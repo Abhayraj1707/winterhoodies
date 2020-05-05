@@ -5,9 +5,12 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from math import ceil
 from django.http import HttpResponse
 import json
+import smtplib
 from django.views.decorators.csrf import csrf_exempt
 from PayTm import Checksum
 MERCHANT_KEY = 'bKMfNxPPf_QdZppa';
+
+
 
 # Display the home page after fetching products
 # from Product table according to search query if searched
@@ -95,6 +98,7 @@ def checkout(request):
 # Utility function which will accept post request generated
 # from javascript file and return the available qunatity of requested
 # product id after checking data
+# @csrf_exempt
 def checkdb(request):
     data = json.loads(request.body.decode("utf-8"))
     id = int(data['id'])
@@ -125,6 +129,10 @@ def contact(request):
         msgObj = Message(name=name, email=email, message=msg)
         msgObj.save()
         thank = True
+        try:
+            sendEmail('rajsinghabhay54@gmail.com', msg)
+        except Exception as e:
+            print(e)
         return render(request, 'shop/contact.html', {'thank': thank})
     return render(request, 'shop/contact.html')
 
@@ -177,7 +185,14 @@ def find_qnty(id, types):
     elif types == 'lblack':
         return product.lblack
 
-
+def sendEmail(to, content):
+    # It sends an email
+    server = smtplib.SMTP('smtp.gmail.com', 587)
+    server.ehlo()
+    server.starttls()
+    server.login('abhay.btech.cs19@iiitranchi.ac.in','your-password-here')
+    server.sendmail('abhay.btech.cs19@iiitranchi.ac.in', to, content)
+    server.close()
 
 
 
