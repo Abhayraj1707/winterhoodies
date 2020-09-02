@@ -53,4 +53,5 @@ Remove the item from database.<br>
 Add product in cart.<br>
 ``` HTMLtoPDF()```<br>
 Convert HTML page to PDF used in generating receipt.<br>
-
+```printbill()```.<br>
+User can generate bill right after the click. User can also change the number of items he want and the bill will mange amount accordingly.
